@@ -5,6 +5,10 @@ const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
+const pv = require('./middleware/koa2-pv.js')
+const m1 = require('./middleware/m1.js')
+const m2 = require('./middleware/m2.js')
+const m3 = require('./middleware/m3.js')
 
 const index = require('./routes/index')
 const users = require('./routes/users')
@@ -14,10 +18,17 @@ onerror(app)
 
 // middlewares
 app.use(bodyparser({
-  enableTypes:['json', 'form', 'text']
+  enableTypes: ['json', 'form', 'text']
 }))
 app.use(json())
 app.use(logger())
+
+// 自定义的中间件
+app.use(pv())
+app.use(m1())
+app.use(m2())
+app.use(m3())
+
 app.use(require('koa-static')(__dirname + '/public'))
 
 app.use(views(__dirname + '/views', {
